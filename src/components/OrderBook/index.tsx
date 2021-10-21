@@ -4,8 +4,11 @@ import "./OrderBook.css";
 
 const OrderBook = () => (
   <section className="order-book-root">
-    <BidTable />
-    <AskTable />
+    <h2>Order Book</h2>
+    <section className="order-book-tables">
+      <BidTable />
+      <AskTable />
+    </section>
   </section>
 );
 

@@ -1,4 +1,10 @@
 .order-book-root {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-book-tables {
+  display: flex;
   justify-content: space-between;
 }
