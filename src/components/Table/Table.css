@@ -1,0 +1,49 @@
+.root {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-top: 1px solid black;
+  display: block;
+  line-height: 32px;
+  overflow: auto;
+  width: 100%;
+}
+
+.thead {
+  border-bottom: 1px solid black;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 10px;
+  text-align: left;
+}
+
+.tr {
+  background-color: inherit;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  border-bottom: 1px solid black;
+}
+
+.td {
+  border: none;
+  min-height: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 1%;
+}
+
+.th {
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid black;
+  color: inherit;
+  min-height: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  width: 1%;
+}
