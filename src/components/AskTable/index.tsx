@@ -19,10 +19,25 @@ function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
   }));
 }
 
+const columns = [
+  {
+    Header: "Price",
+    accessor: "price",
+  },
+  {
+    Header: "Size",
+    accessor: "size",
+  },
+  {
+    Header: "Total",
+    accessor: "total",
+  },
+];
+
 const AskTable = () => {
   const asks = useAsks();
   const data = useMemo(() => mapOrdersToRowData(asks), [asks]);
-  return <Table<OrderBookRowData> data={data} />;
+  return <Table<OrderBookRowData> columns={columns} data={data} />;
 };
 
 export default AskTable;

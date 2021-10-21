@@ -3,15 +3,15 @@ import { useProductId } from "../../store";
 import AskTable from "../AskTable";
 import BidTable from "../BidTable";
 import ToggleFeedButton from "../ToggleFeedButton";
-import "./OrderBook.css";
+import styles from "./OrderBook.module.css";
 
 const OrderBook = () => {
   const selectedProductId = useProductId();
   useDataFeed(selectedProductId);
   return (
-    <section className="order-book-root">
-      <h2>Order Book</h2>
-      <section className="order-book-tables">
+    <section className={styles.root}>
+      <h2 className={styles.title}>Order Book</h2>
+      <section className={styles.tableSection}>
         <BidTable />
         <AskTable />
       </section>

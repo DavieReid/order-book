@@ -1,7 +1,8 @@
-.table-root {
+.root {
+  --color-grid: grey;
   border-collapse: collapse;
   border-spacing: 0;
-  border-top: 1px solid black;
+  border-top: 1px solid var(--color-grid);
   overflow: auto;
   width: 100%;
 }
@@ -11,7 +12,7 @@
   font-size: inherit;
   padding: 10px;
   text-align: center;
-  color: grey;
+  color: var(--color-heading);
 }
 
 .tr {
@@ -30,12 +31,13 @@
   padding-top: 5px;
   padding-bottom: 5px;
   width: 100px;
+  color: var(--color-text);
 }
 
 .th {
   background-color: inherit;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-grid);
   color: inherit;
   min-height: 20px;
   padding-left: 0;

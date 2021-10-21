@@ -10,7 +10,7 @@ type MessageEvent = {
   numLevels: number;
 };
 
-export default function useThrottledMessageProcessing(interval = 2000) {
+export default function useThrottledMessageProcessing(interval = 500) {
   const processDelta = useStore((state) => state.processDelta);
   const dataRef = useRef(new Set<MessageEvent>());
 
