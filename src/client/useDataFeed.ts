@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useStore from "../store";
 import type { OrderTuple } from "../store";
 import useThrottledMessageProcessing from "./useThrottledMessageProcessing";
@@ -13,20 +13,25 @@ type MessageEvent = {
   numLevels: number;
 };
 
-export default function useDataFeed(product: string = "PI_XBTUSD") {
+const getCommandMessage = (isSubscription: boolean, productId: string) =>
+  JSON.stringify({
+    event: isSubscription ? "subscribe" : "unsubscribe",
+    feed: "book_ui_1",
+    product_ids: [productId],
+  });
+
+export default function useDataFeed(product: string) {
   const setInitialSnapshot = useStore((state) => state.setInitialSnapshot);
   const webSocketRef = useRef<WebSocket>();
   const { queueMessage } = useThrottledMessageProcessing();
+  const [activeProduct, setActiveProduct] = useState<string>();
 
   const handleOpen = useCallback(() => {
-    const subscriptionMessage = JSON.stringify({
-      event: "subscribe",
-      feed: "book_ui_1",
-      product_ids: [product],
-    });
+    const subscriptionMessage = getCommandMessage(true, product);
 
     if (webSocketRef.current?.OPEN) {
       webSocketRef.current?.send(subscriptionMessage);
+      setActiveProduct(product);
     }
   }, [product]);
 
@@ -39,6 +44,7 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
     webSocketRef.current.onmessage = (msg) => {
       const message: MessageEvent = JSON.parse(msg.data);
 
+      //treat the initial message upon subscription as a special case
       if (message?.feed?.toLowerCase().includes("snapshot")) {
         setInitialSnapshot({
           bids: message.bids,
@@ -47,6 +53,7 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
           productId: message.product_id,
         });
       } else {
+        // these are deltas...queue them up as there are loads!
         queueMessage(message);
       }
     };
@@ -57,4 +64,19 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
       }
     };
   }, [handleOpen, setInitialSnapshot, queueMessage]);
+
+  useEffect(
+    function unSubscribeFromFeed() {
+      if (activeProduct && webSocketRef.current?.OPEN) {
+        const unSubscribeMessage = JSON.stringify({
+          event: "subscribe",
+          feed: "book_ui_1",
+          product_ids: [activeProduct],
+        });
+
+        webSocketRef.current?.send(unSubscribeMessage);
+      }
+    },
+    [activeProduct]
+  );
 }
