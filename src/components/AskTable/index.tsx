@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { OrderTuple, useAsks } from "../../store";
+import { asUSD } from "../../utils/prices";
 import Table from "../Table";
 
 interface OrderBookRowData extends Record<string, unknown> {
   rowIndex: number;
-  price: number;
+  price: string;
   size: number;
   total: number;
 }
@@ -12,7 +13,7 @@ interface OrderBookRowData extends Record<string, unknown> {
 function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
   return orders.map((order, index) => ({
     rowIndex: index,
-    price: order[0],
+    price: asUSD.format(order[0]),
     size: order[1],
     total: order[2] || 0,
   }));
