@@ -1,17 +1,13 @@
-import "./App.css";
 import useDataFeed from "./client/useDataFeed";
-import BidTable from "./components/BidTable";
-import AskTable from "./components/AskTable";
+import OrderBook from "./components/OrderBook";
 
 function App() {
   useDataFeed();
   return (
     <div className="App">
-      <header className="App-header"></header>
       <main>
         <section>
-          <BidTable />
-          <AskTable />
+          <OrderBook />
         </section>
       </main>
     </div>

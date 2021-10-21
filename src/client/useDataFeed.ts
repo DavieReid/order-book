@@ -9,6 +9,7 @@ type MessageEvent = {
   product_id: string;
   bids: OrderTuple[];
   asks: OrderTuple[];
+  numLevels: number;
 };
 
 export default function useDataFeed(product: string = "PI_XBTUSD") {
@@ -38,7 +39,13 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
       //console.log(message);
 
       if (message?.feed?.toLowerCase().includes("snapshot")) {
-        setInitialSnapshot({ bids: message.bids, asks: message.asks });
+        console.log(message);
+        setInitialSnapshot({
+          bids: message.bids,
+          asks: message.asks,
+          numLevels: message.numLevels,
+          productId: message.product_id,
+        });
       }
     };
 

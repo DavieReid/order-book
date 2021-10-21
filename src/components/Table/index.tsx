@@ -33,7 +33,7 @@ export default function Table<T extends Record<string, unknown>>({
 
   // Render the UI for your table
   return (
-    <table className="root" {...getTableProps()}>
+    <table className="table-root" {...getTableProps()}>
       <thead className="thead">
         {headerGroups.map((headerGroup) => (
           <tr className="tr" {...headerGroup.getHeaderGroupProps()}>

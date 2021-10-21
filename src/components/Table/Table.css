@@ -1,19 +1,17 @@
-.root {
+.table-root {
   border-collapse: collapse;
   border-spacing: 0;
   border-top: 1px solid black;
-  display: block;
-  line-height: 32px;
   overflow: auto;
   width: 100%;
 }
 
 .thead {
-  border-bottom: 1px solid black;
   font-family: inherit;
   font-size: inherit;
   padding: 10px;
-  text-align: left;
+  text-align: center;
+  color: grey;
 }
 
 .tr {
@@ -21,7 +19,7 @@
   border: none;
   font-family: inherit;
   font-size: inherit;
-  border-bottom: 1px solid black;
+  text-align: center;
 }
 
 .td {
@@ -31,7 +29,7 @@
   padding-right: 0;
   padding-top: 5px;
   padding-bottom: 5px;
-  width: 1%;
+  width: 100px;
 }
 
 .th {
@@ -45,5 +43,5 @@
   padding-top: 5px;
   padding-bottom: 5px;
   text-transform: uppercase;
-  width: 1%;
+  width: 100px;
 }
