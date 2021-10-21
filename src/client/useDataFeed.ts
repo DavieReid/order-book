@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import useStore from "../store";
 import type { OrderTuple } from "../store";
+import useThrottledMessageProcessing from "./useThrottledMessageProcessing";
 
 const ENDPOINT = "wss://www.cryptofacilities.com/ws/v1";
 
@@ -15,6 +16,7 @@ type MessageEvent = {
 export default function useDataFeed(product: string = "PI_XBTUSD") {
   const setInitialSnapshot = useStore((state) => state.setInitialSnapshot);
   const webSocketRef = useRef<WebSocket>();
+  const { queueMessage } = useThrottledMessageProcessing();
 
   const handleOpen = useCallback(() => {
     const subscriptionMessage = JSON.stringify({
@@ -36,16 +38,16 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
 
     webSocketRef.current.onmessage = (msg) => {
       const message: MessageEvent = JSON.parse(msg.data);
-      //console.log(message);
 
       if (message?.feed?.toLowerCase().includes("snapshot")) {
-        console.log(message);
         setInitialSnapshot({
           bids: message.bids,
           asks: message.asks,
           numLevels: message.numLevels,
           productId: message.product_id,
         });
+      } else {
+        queueMessage(message);
       }
     };
 
@@ -54,5 +56,5 @@ export default function useDataFeed(product: string = "PI_XBTUSD") {
         webSocketRef.current.close();
       }
     };
-  }, [handleOpen, setInitialSnapshot]);
+  }, [handleOpen, setInitialSnapshot, queueMessage]);
 }
