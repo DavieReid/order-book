@@ -1,28 +1,12 @@
 import { Column, useTable } from "react-table";
-import "./Table.css";
-
-const defaultColumns = [
-  {
-    Header: "Price",
-    accessor: "price",
-  },
-  {
-    Header: "Size",
-    accessor: "size",
-  },
-  {
-    Header: "Total",
-    accessor: "total",
-  },
-];
-
+import styles from "./Table.module.css";
 interface TableProps<RowData extends Record<string, unknown>> {
-  columns?: Column<RowData>[];
+  columns: Column<RowData>[];
   data: RowData[];
 }
 
 export default function Table<T extends Record<string, unknown>>({
-  columns = defaultColumns,
+  columns,
   data = [],
 }: TableProps<T>) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -33,12 +17,12 @@ export default function Table<T extends Record<string, unknown>>({
 
   // Render the UI for your table
   return (
-    <table className="table-root" {...getTableProps()}>
-      <thead className="thead">
+    <table className={styles.root} {...getTableProps()}>
+      <thead className={styles.thead}>
         {headerGroups.map((headerGroup) => (
-          <tr className="tr" {...headerGroup.getHeaderGroupProps()}>
+          <tr className={styles.tr} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th className="th" {...column.getHeaderProps()}>
+              <th className={styles.th} {...column.getHeaderProps()}>
                 {column.render("Header")}
               </th>
             ))}
@@ -49,10 +33,10 @@ export default function Table<T extends Record<string, unknown>>({
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr className="tr" {...row.getRowProps()}>
+            <tr className={styles.tr} {...row.getRowProps()}>
               {row.cells.map((cell) => {
                 return (
-                  <td className="td" {...cell.getCellProps()}>
+                  <td className={styles.td} {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </td>
                 );

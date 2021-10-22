@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { OrderTuple, useAsks } from "../../store";
 import { asUSD } from "../../utils/prices";
+import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
 
 interface OrderBookRowData extends Record<string, unknown> {
@@ -19,10 +20,28 @@ function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
   }));
 }
 
+const columns = [
+  {
+    Header: "Price",
+    accessor: "price",
+    Cell: ({ value }: { value: string }) => (
+      <PriceCell side="ask" value={value} />
+    ),
+  },
+  {
+    Header: "Size",
+    accessor: "size",
+  },
+  {
+    Header: "Total",
+    accessor: "total",
+  },
+];
+
 const AskTable = () => {
   const asks = useAsks();
   const data = useMemo(() => mapOrdersToRowData(asks), [asks]);
-  return <Table<OrderBookRowData> data={data} />;
+  return <Table<OrderBookRowData> columns={columns} data={data} />;
 };
 
 export default AskTable;
