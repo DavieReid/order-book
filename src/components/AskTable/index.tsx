@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { OrderTuple, useAsks } from "../../store";
 import { asUSD } from "../../utils/prices";
+import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
 
 interface OrderBookRowData extends Record<string, unknown> {
@@ -23,6 +24,9 @@ const columns = [
   {
     Header: "Price",
     accessor: "price",
+    Cell: ({ value }: { value: string }) => (
+      <PriceCell side="ask" value={value} />
+    ),
   },
   {
     Header: "Size",
