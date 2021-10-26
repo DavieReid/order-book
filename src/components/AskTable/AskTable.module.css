@@ -1,0 +1,9 @@
+.depthLevel {
+  background: linear-gradient(
+    var(--color-ask-depth-level),
+    var(--color-ask-depth-level)
+  );
+  background-repeat: no-repeat; /* dont change */
+  background-position: left;
+  max-height: 20px;
+}

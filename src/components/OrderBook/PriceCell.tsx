@@ -7,8 +7,14 @@ interface PriceCellProps {
   side: Side;
 }
 
-const PriceCell: FC<PriceCellProps> = ({ value, side = "bid" }) => {
+const PriceCell: FC<PriceCellProps> = ({
+  value,
+  side = "bid",
+}: {
+  value: string;
+  side: Side;
+}) => {
   const color = `var(--color-${side})`;
-  return <div style={{ display: "flex", minWidth: 18, color }}>{value}</div>;
+  return <div style={{ color }}>{value}</div>;
 };
 export default PriceCell;

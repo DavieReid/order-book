@@ -1,8 +1,11 @@
 import { useMemo } from "react";
+import clsx from "clsx";
 import { OrderTuple, useBids } from "../../store";
 import { asUSD } from "../../utils/prices";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
+
+import styles from "./BidTable.module.css";
 
 interface OrderBookRowData extends Record<string, unknown> {
   rowIndex: number;
@@ -14,9 +17,9 @@ interface OrderBookRowData extends Record<string, unknown> {
 function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
   return orders.map((order, index) => ({
     rowIndex: index,
-    total: order[2] || 0,
-    size: order[1],
     price: asUSD.format(order[0]),
+    size: order[1],
+    total: order[2] || 0,
   }));
 }
 
@@ -40,10 +43,15 @@ const columns = [
 
 const BidTable = () => {
   const bids = useBids();
-
   const data = useMemo(() => mapOrdersToRowData(bids), [bids]);
 
-  return <Table<OrderBookRowData> columns={columns} data={data} />;
+  return (
+    <Table<OrderBookRowData>
+      columns={columns}
+      data={data}
+      rowClassName={clsx(styles.depthLevel)}
+    />
+  );
 };
 
 export default BidTable;

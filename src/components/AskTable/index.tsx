@@ -1,8 +1,11 @@
 import { useMemo } from "react";
+import clsx from "clsx";
 import { OrderTuple, useAsks } from "../../store";
 import { asUSD } from "../../utils/prices";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
+
+import styles from "./AskTable.module.css";
 
 interface OrderBookRowData extends Record<string, unknown> {
   rowIndex: number;
@@ -41,7 +44,14 @@ const columns = [
 const AskTable = () => {
   const asks = useAsks();
   const data = useMemo(() => mapOrdersToRowData(asks), [asks]);
-  return <Table<OrderBookRowData> columns={columns} data={data} />;
+
+  return (
+    <Table<OrderBookRowData>
+      columns={columns}
+      data={data}
+      rowClassName={clsx(styles.depthLevel)}
+    />
+  );
 };
 
 export default AskTable;

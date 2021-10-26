@@ -47,7 +47,8 @@ export function handleDelta(
         //remove from order book
         nextOrders.splice(orderIndex, 1);
       } else {
-        //update price
+        //update price and size
+        nextOrders[orderIndex][0] = delta[0];
         nextOrders[orderIndex][1] = delta[1];
       }
     } else {

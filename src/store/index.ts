@@ -1,3 +1,4 @@
+import Big from "big.js";
 import create from "zustand";
 import { calculateTotalsAtLevel, handleDelta } from "./processing";
 
@@ -51,5 +52,38 @@ export const useBids = () => useStore((state) => state.bids || []);
 export const useAsks = () => useStore((state) => state.asks || []);
 
 export const useProductId = () => useStore((state) => state.productId);
+
+export const useSpread = () =>
+  useStore((state) => {
+    const topBid: number =
+      state.bids && state.bids.length > 1 ? state.bids[0][0] : 0;
+    const topAsk: number =
+      state.asks && state.asks.length > 1 ? state.asks[0][0] : 0;
+
+    const spread = new Big(topAsk).minus(topBid);
+
+    return {
+      difference: spread.toFixed(2),
+      percentageDifference:
+        topAsk > 0 ? spread.div(topAsk).times(100).toFixed(2) : 0,
+    };
+  });
+
+export const useHighestTotalInBook = () =>
+  useStore((state) => {
+    const maxTotalBid: number | undefined =
+      state.bids && state.bids.length > 1
+        ? state.bids[state.bids.length - 1][2]
+        : 0;
+    const maxTotalAsk: number | undefined =
+      state.asks && state.asks.length > 1
+        ? state.asks[state.asks.length - 1][2]
+        : 0;
+
+    if (maxTotalBid === undefined || maxTotalAsk === undefined) {
+      return 0;
+    }
+    return maxTotalBid > maxTotalAsk ? maxTotalBid : maxTotalAsk;
+  });
 
 export default useStore;
