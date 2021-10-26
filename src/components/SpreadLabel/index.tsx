@@ -1,11 +1,19 @@
-import { useSpread } from "../../store";
+import clsx from "clsx";
 
-const SpreadLabel = () => {
+import { useSpread } from "../../store";
+import styles from "./SpreadLabel.module.css";
+
+interface SpreadLabelProps {
+  className?: string;
+}
+
+const SpreadLabel = ({ className }: SpreadLabelProps) => {
   const spread = useSpread();
 
   return (
-    <h3 style={{ color: "white" }}>
-      Spread: {spread.difference}({spread.percentageDifference}%)
+    <h3 className={clsx(styles.root, className)}>
+      <span className={styles.difference}>Spread: {spread.difference}</span>
+      <span>({spread.percentageDifference}%)</span>
     </h3>
   );
 };

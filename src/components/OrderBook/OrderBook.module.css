@@ -29,12 +29,26 @@
   );
 }
 
-.spread-middle {
+.spreadTop {
+  display: block;
+}
+
+.spreadMiddle {
   display: none;
 }
 
 @media only screen and (max-width: 600px) {
   .tableSection {
     flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .spreadTop {
+    display: none;
+  }
+
+  .spreadMiddle {
+    display: block;
   }
 }

@@ -1,0 +1,7 @@
+.root {
+  color: var(--color-heading);
+}
+
+.difference {
+  padding-right: 5px;
+}

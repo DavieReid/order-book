@@ -13,9 +13,10 @@ const OrderBook = () => {
   return (
     <section className={styles.root}>
       <h2 className={styles.title}>Order Book</h2>
-      <SpreadLabel />
+      <SpreadLabel className={styles.spreadTop} />
       <section className={styles.tableSection}>
         <BidTable />
+        <SpreadLabel className={styles.spreadMiddle} />
         <AskTable />
       </section>
       <ToggleFeedButton />

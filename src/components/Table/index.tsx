@@ -9,6 +9,7 @@ import { useHighestTotalInBook } from "../../store";
 interface TableProps<RowData extends Record<string, unknown>> {
   columns: Column<RowData>[];
   data: RowData[];
+  headerClassName?: string;
   rowClassName?: string;
 }
 
@@ -20,6 +21,7 @@ function getDepthLevel(levelTotal: number, highTotal: number) {
 export default function Table<T extends Record<string, unknown>>({
   columns,
   data = [],
+  headerClassName,
   rowClassName,
 }: TableProps<T>) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -33,7 +35,7 @@ export default function Table<T extends Record<string, unknown>>({
   // Render the UI for your table
   return (
     <div className={styles.root} {...getTableProps()}>
-      <div className={styles.thead}>
+      <div className={clsx(styles.thead, headerClassName)}>
         {headerGroups.map((headerGroup) => (
           <div className={styles.tr} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
@@ -63,9 +65,9 @@ export default function Table<T extends Record<string, unknown>>({
             >
               {row.cells.map((cell) => {
                 return (
-                  <span className={styles.td} {...cell.getCellProps()}>
+                  <div className={styles.td} {...cell.getCellProps()}>
                     {cell.render("Cell")}
-                  </span>
+                  </div>
                 );
               })}
             </div>
