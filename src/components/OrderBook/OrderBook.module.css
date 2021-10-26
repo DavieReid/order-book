@@ -28,3 +28,13 @@
     var(--color-ask-depth-level)
   );
 }
+
+.spread-middle {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .tableSection {
+    flex-direction: column-reverse;
+  }
+}
