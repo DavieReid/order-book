@@ -1,0 +1,18 @@
+.toggle {
+  background-color: #5741d9;
+  display: block;
+  padding: 12px 15px 11px;
+  color: var(--color-text);
+  border-radius: 30px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 11px;
+  font-weight: 700;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.root {
+  margin-top: 10px;
+}

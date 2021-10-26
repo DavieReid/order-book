@@ -1,4 +1,5 @@
 import useStore, { useProductId } from "../../store";
+import styles from "./ToggleFeedButton.module.css";
 
 const XBTUSD = "PI_XBTUSD";
 const ETHUSD = "PI_ETHUSD";
@@ -14,7 +15,13 @@ const ToggleFeedButton = () => {
       setProductId(XBTUSD);
     }
   };
-  return <button onClick={handleClick}>Toggle Feed</button>;
+  return (
+    <div className={styles.root}>
+      <button className={styles.toggle} onClick={handleClick}>
+        Toggle Feed
+      </button>
+    </div>
+  );
 };
 
 export default ToggleFeedButton;

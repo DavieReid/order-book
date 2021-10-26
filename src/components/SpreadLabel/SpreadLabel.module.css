@@ -1,0 +1,14 @@
+.root {
+  color: var(--color-heading);
+}
+
+.difference {
+  padding-right: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .root {
+    font-size: 1em;
+    height: 1em;
+  }
+}

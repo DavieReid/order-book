@@ -7,3 +7,18 @@
   background-repeat: no-repeat; /* dont change */
   background-position: right;
 }
+
+.header {
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 600px) {
+  .header {
+    display: none;
+    border: none;
+  }
+  .depthLevel {
+    flex-direction: row-reverse;
+    background-position: left;
+  }
+}

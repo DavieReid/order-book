@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import clsx from "clsx";
 import { OrderTuple, useBids } from "../../store";
 import { asUSD } from "../../utils/prices";
 import PriceCell from "../OrderBook/PriceCell";
@@ -49,7 +48,8 @@ const BidTable = () => {
     <Table<OrderBookRowData>
       columns={columns}
       data={data}
-      rowClassName={clsx(styles.depthLevel)}
+      headerClassName={styles.header}
+      rowClassName={styles.depthLevel}
     />
   );
 };
