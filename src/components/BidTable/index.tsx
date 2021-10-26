@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import clsx from "clsx";
-import { OrderTuple, useBids, useHighestTotalInBook } from "../../store";
+import { OrderTuple, useBids } from "../../store";
 import { asUSD } from "../../utils/prices";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
@@ -12,22 +12,14 @@ interface OrderBookRowData extends Record<string, unknown> {
   price: string;
   size: number;
   total: number;
-  depthLevel: string;
 }
 
-function mapOrdersToRowData(
-  orders: OrderTuple[],
-  highTotal: number
-): OrderBookRowData[] {
+function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
   return orders.map((order, index) => ({
     rowIndex: index,
     price: asUSD.format(order[0]),
     size: order[1],
     total: order[2] || 0,
-    depthLevel:
-      highTotal > 0 && order[2]
-        ? ((order[2] / highTotal) * 100).toFixed(2)
-        : "0%",
   }));
 }
 
@@ -51,8 +43,7 @@ const columns = [
 
 const BidTable = () => {
   const bids = useBids();
-  const high = useHighestTotalInBook();
-  const data = useMemo(() => mapOrdersToRowData(bids, high), [bids, high]);
+  const data = useMemo(() => mapOrdersToRowData(bids), [bids]);
 
   return (
     <Table<OrderBookRowData>

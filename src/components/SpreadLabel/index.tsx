@@ -5,7 +5,7 @@ const SpreadLabel = () => {
 
   return (
     <h3 style={{ color: "white" }}>
-      Spread: {spread.difference.toFixed(2)}({spread.percentageDifference}%)
+      Spread: {spread.difference}({spread.percentageDifference}%)
     </h3>
   );
 };

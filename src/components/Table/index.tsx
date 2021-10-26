@@ -1,13 +1,20 @@
 import { Column, useTable } from "react-table";
 import clsx from "clsx";
+import Big from "big.js";
 
 import styles from "./Table.module.css";
 import React from "react";
+import { useHighestTotalInBook } from "../../store";
 
 interface TableProps<RowData extends Record<string, unknown>> {
   columns: Column<RowData>[];
   data: RowData[];
   rowClassName?: string;
+}
+
+function getDepthLevel(levelTotal: number, highTotal: number) {
+  const depth = new Big(levelTotal).div(highTotal).times(100);
+  return depth.toFixed(2);
 }
 
 export default function Table<T extends Record<string, unknown>>({
@@ -20,6 +27,8 @@ export default function Table<T extends Record<string, unknown>>({
       columns,
       data,
     });
+
+  const highestTotalInBook = useHighestTotalInBook();
 
   // Render the UI for your table
   return (
@@ -39,8 +48,11 @@ export default function Table<T extends Record<string, unknown>>({
         {rows.map((row, i) => {
           prepareRow(row);
 
+          const { total } = row.original;
+          const depthLevel = getDepthLevel(total as number, highestTotalInBook);
+
           const depthLevelStyle: React.CSSProperties = {
-            backgroundSize: `${row.original.depthLevel}%`,
+            backgroundSize: `${depthLevel}%`,
           };
 
           return (

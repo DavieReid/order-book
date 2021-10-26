@@ -1,3 +1,4 @@
+import Big from "big.js";
 import create from "zustand";
 import { calculateTotalsAtLevel, handleDelta } from "./processing";
 
@@ -59,11 +60,12 @@ export const useSpread = () =>
     const topAsk: number =
       state.asks && state.asks.length > 1 ? state.asks[0][0] : 0;
 
-    const spread: number = topAsk - topBid;
+    const spread = new Big(topAsk).minus(topBid);
 
     return {
-      difference: spread,
-      percentageDifference: ((spread / topAsk) * 100).toFixed(2),
+      difference: spread.toFixed(2),
+      percentageDifference:
+        topAsk > 0 ? spread.div(topAsk).times(100).toFixed(2) : 0,
     };
   });
 
