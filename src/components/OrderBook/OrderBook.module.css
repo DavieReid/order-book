@@ -38,6 +38,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+  .title {
+    font-size: 1em;
+    height: 1em;
+  }
   .tableSection {
     flex-direction: column-reverse;
     justify-content: center;

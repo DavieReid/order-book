@@ -56,7 +56,10 @@
 
 @media only screen and (max-width: 600px) {
   .root {
-    height: 50vh;
+    height: 40vh;
     overflow-y: scroll;
+  }
+  .thead {
+    padding: 2px;
   }
 }
