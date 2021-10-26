@@ -17,6 +17,8 @@ code {
   --color-bg: #0a0c10;
   --color-text: #fff;
   --color-heading: grey;
-  --color-bid: #00d865;
-  --color-ask: #eb3f34;
+  --color-bid: rgb(0, 216, 101);
+  --color-bid-depth-level: rgb(0, 216, 101, 0.3);
+  --color-ask: rgb(235, 63, 52);
+  --color-ask-depth-level: rgb(235, 63, 52, 0.3);
 }

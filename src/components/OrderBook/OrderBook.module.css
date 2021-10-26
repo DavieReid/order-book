@@ -12,3 +12,19 @@
 .title {
   color: var(--color-heading);
 }
+
+.depthLevel {
+  background-repeat: no-repeat; /* dont change */
+  background-position: right;
+}
+
+.bid {
+  background: linear-gradient(var(--color-bid), var(--color-bid));
+}
+
+.ask {
+  background: linear-gradient(
+    var(--color-ask-depth-level),
+    var(--color-ask-depth-level)
+  );
+}

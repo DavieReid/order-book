@@ -1,13 +1,19 @@
 import { Column, useTable } from "react-table";
+import clsx from "clsx";
+
 import styles from "./Table.module.css";
+import React from "react";
+
 interface TableProps<RowData extends Record<string, unknown>> {
   columns: Column<RowData>[];
   data: RowData[];
+  rowClassName?: string;
 }
 
 export default function Table<T extends Record<string, unknown>>({
   columns,
   data = [],
+  rowClassName,
 }: TableProps<T>) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -32,8 +38,17 @@ export default function Table<T extends Record<string, unknown>>({
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
+
+          const depthLevelStyle: React.CSSProperties = {
+            backgroundSize: `${row.original.depthLevel}%`,
+          };
+
           return (
-            <tr className={styles.tr} {...row.getRowProps()}>
+            <tr
+              className={clsx(styles.tr, rowClassName)}
+              style={depthLevelStyle}
+              {...row.getRowProps()}
+            >
               {row.cells.map((cell) => {
                 return (
                   <td className={styles.td} {...cell.getCellProps()}>

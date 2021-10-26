@@ -1,22 +1,33 @@
 import { useMemo } from "react";
-import { OrderTuple, useBids } from "../../store";
+import clsx from "clsx";
+import { OrderTuple, useBids, useHighestTotalInBook } from "../../store";
 import { asUSD } from "../../utils/prices";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
+
+import styles from "./BidTable.module.css";
 
 interface OrderBookRowData extends Record<string, unknown> {
   rowIndex: number;
   price: string;
   size: number;
   total: number;
+  depthLevel: string;
 }
 
-function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
+function mapOrdersToRowData(
+  orders: OrderTuple[],
+  highTotal: number
+): OrderBookRowData[] {
   return orders.map((order, index) => ({
     rowIndex: index,
-    total: order[2] || 0,
-    size: order[1],
     price: asUSD.format(order[0]),
+    size: order[1],
+    total: order[2] || 0,
+    depthLevel:
+      highTotal > 0 && order[2]
+        ? ((order[2] / highTotal) * 100).toFixed(2)
+        : "0%",
   }));
 }
 
@@ -40,10 +51,16 @@ const columns = [
 
 const BidTable = () => {
   const bids = useBids();
+  const high = useHighestTotalInBook();
+  const data = useMemo(() => mapOrdersToRowData(bids, high), [bids, high]);
 
-  const data = useMemo(() => mapOrdersToRowData(bids), [bids]);
-
-  return <Table<OrderBookRowData> columns={columns} data={data} />;
+  return (
+    <Table<OrderBookRowData>
+      columns={columns}
+      data={data}
+      rowClassName={clsx(styles.depthLevel)}
+    />
+  );
 };
 
 export default BidTable;

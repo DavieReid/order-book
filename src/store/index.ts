@@ -52,4 +52,36 @@ export const useAsks = () => useStore((state) => state.asks || []);
 
 export const useProductId = () => useStore((state) => state.productId);
 
+export const useSpread = () =>
+  useStore((state) => {
+    const topBid: number =
+      state.bids && state.bids.length > 1 ? state.bids[0][0] : 0;
+    const topAsk: number =
+      state.asks && state.asks.length > 1 ? state.asks[0][0] : 0;
+
+    const spread: number = topAsk - topBid;
+
+    return {
+      difference: spread,
+      percentageDifference: ((spread / topAsk) * 100).toFixed(2),
+    };
+  });
+
+export const useHighestTotalInBook = () =>
+  useStore((state) => {
+    const maxTotalBid: number | undefined =
+      state.bids && state.bids.length > 1
+        ? state.bids[state.bids.length - 1][2]
+        : 0;
+    const maxTotalAsk: number | undefined =
+      state.asks && state.asks.length > 1
+        ? state.asks[state.asks.length - 1][2]
+        : 0;
+
+    if (maxTotalBid === undefined || maxTotalAsk === undefined) {
+      return 0;
+    }
+    return maxTotalBid > maxTotalAsk ? maxTotalBid : maxTotalAsk;
+  });
+
 export default useStore;
