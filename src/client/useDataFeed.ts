@@ -35,48 +35,76 @@ export default function useDataFeed(product: string) {
     }
   }, [product]);
 
-  useEffect(() => {
-    webSocketRef.current = new WebSocket(ENDPOINT);
-    webSocketRef.current.onopen = () => handleOpen();
+  useEffect(
+    function subscribe() {
+      webSocketRef.current = new WebSocket(ENDPOINT);
+      webSocketRef.current.onopen = () => handleOpen();
 
-    webSocketRef.current.onclose = () => console.log("ws closed");
+      webSocketRef.current.onclose = () => console.log("ws closed");
 
-    webSocketRef.current.onmessage = (msg) => {
-      const message: MessageEvent = JSON.parse(msg.data);
+      webSocketRef.current.onmessage = (msg) => {
+        const message: MessageEvent = JSON.parse(msg.data);
+        console.log(message);
 
-      //treat the initial message upon subscription as a special case
-      if (message?.feed?.toLowerCase().includes("snapshot")) {
-        setInitialSnapshot({
-          bids: message.bids,
-          asks: message.asks,
-          numLevels: message.numLevels,
-          productId: message.product_id,
-        });
-      } else {
-        // these are deltas...queue them up as there are loads!
-        queueMessage(message);
-      }
-    };
+        //treat the initial message upon subscription as a special case
+        if (message?.feed?.toLowerCase().includes("snapshot")) {
+          setInitialSnapshot({
+            bids: message.bids,
+            asks: message.asks,
+            numLevels: message.numLevels,
+            productId: message.product_id,
+          });
+        } else {
+          // these are deltas...queue them up as there are loads!
+          queueMessage(message);
+        }
+      };
 
-    return () => {
-      if (webSocketRef.current) {
-        webSocketRef.current.close();
-      }
-    };
-  }, [handleOpen, setInitialSnapshot, queueMessage]);
+      return () => {
+        if (webSocketRef.current) {
+          webSocketRef.current.close();
+        }
+      };
+    },
+    [handleOpen, setInitialSnapshot, queueMessage]
+  );
 
   useEffect(
     function unSubscribeFromFeed() {
-      if (activeProduct && webSocketRef.current?.OPEN) {
+      if (
+        activeProduct &&
+        webSocketRef.current?.OPEN &&
+        !webSocketRef.current.CONNECTING
+      ) {
         const unSubscribeMessage = JSON.stringify({
           event: "subscribe",
           feed: "book_ui_1",
           product_ids: [activeProduct],
         });
-
         webSocketRef.current?.send(unSubscribeMessage);
       }
     },
     [activeProduct]
+  );
+
+  useEffect(
+    function unSubscribeFromFeedWhenVisibilityLost() {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === "hidden") {
+          if (webSocketRef.current?.OPEN && !webSocketRef.current.CONNECTING) {
+            const unSubscribeMessage = getCommandMessage(false, product);
+            webSocketRef.current?.send(unSubscribeMessage);
+          }
+        }
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      return () =>
+        document.removeEventListener(
+          "visibilityChange",
+          handleVisibilityChange
+        );
+    },
+    [product]
   );
 }
