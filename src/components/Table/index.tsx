@@ -32,19 +32,19 @@ export default function Table<T extends Record<string, unknown>>({
 
   // Render the UI for your table
   return (
-    <table className={styles.root} {...getTableProps()}>
-      <thead className={styles.thead}>
+    <div className={styles.root} {...getTableProps()}>
+      <div className={styles.thead}>
         {headerGroups.map((headerGroup) => (
-          <tr className={styles.tr} {...headerGroup.getHeaderGroupProps()}>
+          <div className={styles.tr} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th className={styles.th} {...column.getHeaderProps()}>
+              <span className={styles.th} {...column.getHeaderProps()}>
                 {column.render("Header")}
-              </th>
+              </span>
             ))}
-          </tr>
+          </div>
         ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
+      </div>
+      <div {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
 
@@ -56,22 +56,22 @@ export default function Table<T extends Record<string, unknown>>({
           };
 
           return (
-            <tr
-              className={clsx(styles.tr, rowClassName)}
+            <div
+              className={clsx(styles.tr, styles.bodyRow, rowClassName)}
               style={depthLevelStyle}
               {...row.getRowProps()}
             >
               {row.cells.map((cell) => {
                 return (
-                  <td className={styles.td} {...cell.getCellProps()}>
+                  <span className={styles.td} {...cell.getCellProps()}>
                     {cell.render("Cell")}
-                  </td>
+                  </span>
                 );
               })}
-            </tr>
+            </div>
           );
         })}
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 }
