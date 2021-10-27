@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import shallow from "zustand/shallow";
 import useStore from "../store";
 import type { OrderTuple } from "../store";
 import useThrottledMessageProcessing from "./useThrottledMessageProcessing";
@@ -21,10 +22,19 @@ const getCommandMessage = (isSubscription: boolean, productId: string) =>
   });
 
 export default function useDataFeed(product: string) {
-  const setInitialSnapshot = useStore((state) => state.setInitialSnapshot);
-  const setShowConnectionWarning = useStore(
-    (state) => state.setShowConnectionWarning
+  const {
+    setInitialSnapshot,
+    setShowConnectionWarning,
+    showConnectionWarning,
+  } = useStore(
+    (state) => ({
+      setInitialSnapshot: state.setInitialSnapshot,
+      setShowConnectionWarning: state.setShowConnectionWarning,
+      showConnectionWarning: state.showConnectionWarning,
+    }),
+    shallow
   );
+
   const webSocketRef = useRef<WebSocket>();
   const { queueMessage } = useThrottledMessageProcessing();
   const [activeProduct, setActiveProduct] = useState<string>();
@@ -41,27 +51,30 @@ export default function useDataFeed(product: string) {
 
   useEffect(
     function subscribe() {
-      webSocketRef.current = new WebSocket(ENDPOINT);
-      webSocketRef.current.onopen = () => handleOpen();
+      if (!showConnectionWarning) {
+        webSocketRef.current = new WebSocket(ENDPOINT);
 
-      webSocketRef.current.onclose = () => console.log("ws closed");
+        webSocketRef.current.onopen = () => handleOpen();
 
-      webSocketRef.current.onmessage = (msg) => {
-        const message: MessageEvent = JSON.parse(msg.data);
+        webSocketRef.current.onclose = () => console.log("ws closed");
 
-        //treat the initial message upon subscription as a special case
-        if (message?.feed?.toLowerCase().includes("snapshot")) {
-          setInitialSnapshot({
-            bids: message.bids,
-            asks: message.asks,
-            numLevels: message.numLevels,
-            productId: message.product_id,
-          });
-        } else {
-          // these are deltas...queue them up as there are loads!
-          queueMessage(message);
-        }
-      };
+        webSocketRef.current.onmessage = (msg) => {
+          const message: MessageEvent = JSON.parse(msg.data);
+
+          //treat the initial message upon subscription as a special case
+          if (message?.feed?.toLowerCase().includes("snapshot")) {
+            setInitialSnapshot({
+              bids: message.bids,
+              asks: message.asks,
+              numLevels: message.numLevels,
+              productId: message.product_id,
+            });
+          } else {
+            // these are deltas...queue them up as there are loads!
+            queueMessage(message);
+          }
+        };
+      }
 
       return () => {
         if (webSocketRef.current) {
@@ -69,7 +82,7 @@ export default function useDataFeed(product: string) {
         }
       };
     },
-    [handleOpen, setInitialSnapshot, queueMessage]
+    [handleOpen, setInitialSnapshot, queueMessage, showConnectionWarning]
   );
 
   useEffect(
