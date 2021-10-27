@@ -21,7 +21,9 @@ interface GlobalAppState {
   asks?: OrderTuple[];
   numLevels: number;
   productId: string;
+  showConnectionWarning: boolean;
   // setters
+  setShowConnectionWarning: (showConnectionWarning: boolean) => void;
   setProductId: (productId: string) => void;
   setInitialSnapshot: (source: InitialSnapshotSource) => void;
   processDelta: (source: Delta) => void;
@@ -32,7 +34,10 @@ const useStore = create<GlobalAppState>((set, get) => ({
   asks: [],
   numLevels: 25,
   productId: "PI_XBTUSD",
+  showConnectionWarning: false,
   setProductId: (productId) => set({ productId }),
+  setShowConnectionWarning: (showConnectionWarning) =>
+    set({ showConnectionWarning }),
   setInitialSnapshot: ({ bids, asks, numLevels, productId }) =>
     set({
       bids: calculateTotalsAtLevel(bids),
@@ -46,6 +51,9 @@ const useStore = create<GlobalAppState>((set, get) => ({
       asks: handleDelta(get().asks || [], deltaAsks || [], get().numLevels),
     }),
 }));
+
+export const useShowConnectionWarning = () =>
+  useStore((state) => state.showConnectionWarning);
 
 export const useBids = () => useStore((state) => state.bids || []);
 

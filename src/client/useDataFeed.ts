@@ -22,6 +22,9 @@ const getCommandMessage = (isSubscription: boolean, productId: string) =>
 
 export default function useDataFeed(product: string) {
   const setInitialSnapshot = useStore((state) => state.setInitialSnapshot);
+  const setShowConnectionWarning = useStore(
+    (state) => state.setShowConnectionWarning
+  );
   const webSocketRef = useRef<WebSocket>();
   const { queueMessage } = useThrottledMessageProcessing();
   const [activeProduct, setActiveProduct] = useState<string>();
@@ -32,8 +35,9 @@ export default function useDataFeed(product: string) {
     if (webSocketRef.current?.OPEN) {
       webSocketRef.current?.send(subscriptionMessage);
       setActiveProduct(product);
+      setShowConnectionWarning(false);
     }
-  }, [product]);
+  }, [product, setShowConnectionWarning]);
 
   useEffect(
     function subscribe() {
@@ -44,7 +48,6 @@ export default function useDataFeed(product: string) {
 
       webSocketRef.current.onmessage = (msg) => {
         const message: MessageEvent = JSON.parse(msg.data);
-        console.log(message);
 
         //treat the initial message upon subscription as a special case
         if (message?.feed?.toLowerCase().includes("snapshot")) {
@@ -94,6 +97,7 @@ export default function useDataFeed(product: string) {
           if (webSocketRef.current?.OPEN && !webSocketRef.current.CONNECTING) {
             const unSubscribeMessage = getCommandMessage(false, product);
             webSocketRef.current?.send(unSubscribeMessage);
+            setShowConnectionWarning(true);
           }
         }
       };
@@ -105,6 +109,6 @@ export default function useDataFeed(product: string) {
           handleVisibilityChange
         );
     },
-    [product]
+    [product, setShowConnectionWarning]
   );
 }
