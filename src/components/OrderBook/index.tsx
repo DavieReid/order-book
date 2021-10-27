@@ -4,6 +4,7 @@ import AskTable from "../AskTable";
 import BidTable from "../BidTable";
 import ToggleFeedButton from "../ToggleFeedButton";
 import SpreadLabel from "../SpreadLabel";
+import DisconnectedBanner from "../DisconnectedBanner";
 import styles from "./OrderBook.module.css";
 
 const OrderBook = () => {
@@ -12,6 +13,7 @@ const OrderBook = () => {
 
   return (
     <section className={styles.root}>
+      <DisconnectedBanner />
       <h2 className={styles.title}>Order Book</h2>
       <SpreadLabel className={styles.spreadTop} />
       <section className={styles.tableSection}>
