@@ -1,8 +1,8 @@
 import useStore, { useProductId } from "../../store";
 import styles from "./ToggleFeedButton.module.css";
 
-const XBTUSD = "PI_XBTUSD";
-const ETHUSD = "PI_ETHUSD";
+export const XBTUSD = "PI_XBTUSD";
+export const ETHUSD = "PI_ETHUSD";
 
 const ToggleFeedButton = () => {
   const selectedProductId = useProductId();
