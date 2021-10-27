@@ -54,6 +54,11 @@
   width: 100px;
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
 @media only screen and (max-width: 600px) {
   .root {
     height: 40vh;
@@ -61,5 +66,8 @@
   }
   .thead {
     padding: 2px;
+  }
+  .body {
+    flex-direction: column-reverse;
   }
 }

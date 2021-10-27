@@ -41,7 +41,7 @@ export default function Table<T extends Record<string, unknown>>({
           </div>
         ))}
       </div>
-      <div {...getTableBodyProps()}>
+      <div className={styles.body} {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
 
