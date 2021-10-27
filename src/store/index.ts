@@ -64,9 +64,9 @@ export const useProductId = () => useStore((state) => state.productId);
 export const useSpread = () =>
   useStore((state) => {
     const topBid: number =
-      state.bids && state.bids.length > 1 ? state.bids[0][0] : 0;
+      state.bids && state.bids.length >= 1 ? state.bids[0][0] : 0;
     const topAsk: number =
-      state.asks && state.asks.length > 1 ? state.asks[0][0] : 0;
+      state.asks && state.asks.length >= 1 ? state.asks[0][0] : 0;
 
     const spread = new Big(topAsk).minus(topBid);
 
