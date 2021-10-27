@@ -9,7 +9,7 @@ interface SpreadLabelProps {
 }
 
 const DisconnectedBanner = ({ className }: SpreadLabelProps) => {
-  const { setShowConnectionWarning, show } = useStore(
+  const { show, setShowConnectionWarning } = useStore(
     (state) => ({
       setInitialSnapshot: state.setInitialSnapshot,
       setShowConnectionWarning: state.setShowConnectionWarning,
@@ -17,7 +17,6 @@ const DisconnectedBanner = ({ className }: SpreadLabelProps) => {
     }),
     shallow
   );
-
   const handleReconnect = () => {
     setShowConnectionWarning(false);
   };
