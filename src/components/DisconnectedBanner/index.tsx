@@ -11,7 +11,6 @@ interface SpreadLabelProps {
 const DisconnectedBanner = ({ className }: SpreadLabelProps) => {
   const { show, setShowConnectionWarning } = useStore(
     (state) => ({
-      setInitialSnapshot: state.setInitialSnapshot,
       setShowConnectionWarning: state.setShowConnectionWarning,
       show: state.showConnectionWarning,
     }),
