@@ -4,7 +4,7 @@ import useStore from "../store";
 import type { OrderTuple } from "../store";
 import useThrottledMessageProcessing from "./useThrottledMessageProcessing";
 
-const ENDPOINT = "wss://www.cryptofacilities.com/ws/v1";
+const ENDPOINT = process.env.REACT_APP_WS_ENDPOINT || "";
 
 type MessageEvent = {
   feed: string;
