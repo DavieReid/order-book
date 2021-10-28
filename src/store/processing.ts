@@ -13,10 +13,10 @@ const priceComparator = (a: OrderTuple, b: OrderTuple) => {
   return 0;
 };
 
-export function calculateTotalsAtLevel(orders: OrderTuple[], startLevel = 0) {
+export function calculateTotals(orders: OrderTuple[]) {
   let runningTotal = 0;
 
-  for (let i = startLevel; i <= orders.length - 1; i++) {
+  for (let i = 0; i <= orders.length - 1; i++) {
     let order = orders[i];
     runningTotal += order[1];
     order[2] = runningTotal;
@@ -61,7 +61,5 @@ export function handleDelta(
 
   // because new orders are pushed in at the end
   // we need to sort by price to ensure correct total calculations
-  return calculateTotalsAtLevel(
-    nextOrders.sort(priceComparator).slice(0, numLevels)
-  );
+  return calculateTotals(nextOrders.sort(priceComparator).slice(0, numLevels));
 }

@@ -63,11 +63,11 @@ export default function useDataFeed(product: string) {
           webSocketRef.current.onmessage = (msg) => {
             const message: MessageEvent = JSON.parse(msg.data);
 
-            //treat the initial message upon subscription as a special case
             if (
               !processedInitialMessageRef.current &&
               message?.feed?.toLowerCase().includes("snapshot")
             ) {
+              //treat the initial message upon subscription as a special case as it provides the snapshot
               setInitialSnapshot({
                 bids: message.bids,
                 asks: message.asks,
