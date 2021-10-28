@@ -36,6 +36,7 @@ export default function useDataFeed(product: string) {
   );
 
   const webSocketRef = useRef<WebSocket>();
+  const processedInitialMessageRef = useRef(false);
   const { queueMessage } = useThrottledMessageProcessing();
   const [activeProduct, setActiveProduct] = useState<string>();
 
@@ -63,13 +64,17 @@ export default function useDataFeed(product: string) {
             const message: MessageEvent = JSON.parse(msg.data);
 
             //treat the initial message upon subscription as a special case
-            if (message?.feed?.toLowerCase().includes("snapshot")) {
+            if (
+              !processedInitialMessageRef.current &&
+              message?.feed?.toLowerCase().includes("snapshot")
+            ) {
               setInitialSnapshot({
                 bids: message.bids,
                 asks: message.asks,
                 numLevels: message.numLevels,
                 productId: message.product_id,
               });
+              processedInitialMessageRef.current = true;
             } else {
               // these are deltas...queue them up as there are loads!
               queueMessage(message);
@@ -108,6 +113,7 @@ export default function useDataFeed(product: string) {
           product_ids: [activeProduct],
         });
         webSocketRef.current?.send(unSubscribeMessage);
+        processedInitialMessageRef.current = false;
       }
     },
     [activeProduct]
@@ -121,6 +127,7 @@ export default function useDataFeed(product: string) {
             const unSubscribeMessage = getCommandMessage(false, product);
             webSocketRef.current?.send(unSubscribeMessage);
             setShowConnectionWarning(true);
+            processedInitialMessageRef.current = false;
           }
         }
       };

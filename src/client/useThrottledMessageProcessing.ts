@@ -10,21 +10,32 @@ type MessageEvent = {
   numLevels: number;
 };
 
-export default function useThrottledMessageProcessing(interval = 2000) {
+export default function useThrottledMessageProcessing(interval = 1000) {
   const processDelta = useStore((state) => state.processDelta);
-  const dataRef = useRef(new Set<MessageEvent>());
+
+  const askDeltasRef = useRef<OrderTuple[]>([]);
+  const bidDeltasRef = useRef<OrderTuple[]>([]);
 
   const queueMessage = useCallback((message: MessageEvent) => {
-    dataRef.current.add(message);
+    const { bids, asks } = message;
+
+    if (bids?.length > 0) {
+      bidDeltasRef.current = bidDeltasRef.current.concat(bids);
+    }
+
+    if (asks?.length > 0) {
+      askDeltasRef.current = askDeltasRef.current.concat(asks);
+    }
   }, []);
 
   useEffect(() => {
     const flush = () => {
-      const data = dataRef.current;
-      data.forEach((message) => {
-        processDelta({ deltaBids: message.bids, deltaAsks: message.asks });
+      processDelta({
+        deltaBids: bidDeltasRef.current,
+        deltaAsks: askDeltasRef.current,
       });
-      data.clear();
+      askDeltasRef.current = [];
+      bidDeltasRef.current = [];
     };
     let timer = setInterval(flush, interval);
     return () => {
