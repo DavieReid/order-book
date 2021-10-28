@@ -3,9 +3,8 @@
     var(--color-bid-depth-level),
     var(--color-bid-depth-level)
   );
-  background-size: 75%;
-  background-repeat: no-repeat; /* dont change */
-  background-position: right;
+  background-repeat: no-repeat;
+  background-position: calc(100% + 1px) 0;
 }
 
 .header {

@@ -3,8 +3,16 @@ import { render, screen } from "@testing-library/react";
 import { act, renderHook } from "@testing-library/react-hooks";
 import useStore, { OrderTuple } from "../../../store";
 
-const bids: OrderTuple[] = [[100, 10, 5]];
-const asks: OrderTuple[] = [[102, 10, 2]];
+const bids: OrderTuple[] = [
+  [100, 10, 10],
+  [100.5, 10, 20],
+  [101, 5, 25],
+];
+const asks: OrderTuple[] = [
+  [102, 10, 10],
+  [103, 10, 20],
+  [104, 10, 30],
+];
 
 describe("GIVEN a `SpreadLabel`", () => {
   describe("WHEN `setShowConnectionWarning` is true", () => {

@@ -15,6 +15,6 @@ const PriceCell: FC<PriceCellProps> = ({
   side: Side;
 }) => {
   const color = `var(--color-${side})`;
-  return <div style={{ color }}>{value}</div>;
+  return <span style={{ color }}>{value}</span>;
 };
 export default PriceCell;

@@ -45,8 +45,11 @@ export default function Table<T extends Record<string, unknown>>({
         {rows.map((row, i) => {
           prepareRow(row);
 
-          const { total } = row.original;
-          const depthLevel = getDepthLevel(total as number, highestTotalInBook);
+          const { totalRaw } = row.original;
+          const depthLevel = getDepthLevel(
+            totalRaw as number,
+            highestTotalInBook
+          );
 
           const depthLevelStyle: React.CSSProperties = {
             backgroundSize: `${depthLevel}% 100%`,
@@ -60,9 +63,9 @@ export default function Table<T extends Record<string, unknown>>({
             >
               {row.cells.map((cell) => {
                 return (
-                  <div className={styles.td} {...cell.getCellProps()}>
+                  <span className={styles.td} {...cell.getCellProps()}>
                     {cell.render("Cell")}
-                  </div>
+                  </span>
                 );
               })}
             </div>

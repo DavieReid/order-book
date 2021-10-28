@@ -35,7 +35,7 @@ const useStore = create<GlobalAppState>((set, get) => ({
   numLevels: 25,
   productId: "PI_XBTUSD",
   showConnectionWarning: false,
-  setProductId: (productId) => set({ productId }),
+  setProductId: (productId) => set({ productId, bids: [], asks: [] }),
   setShowConnectionWarning: (showConnectionWarning) =>
     set({ showConnectionWarning }),
   setInitialSnapshot: ({ bids, asks, numLevels, productId }) =>

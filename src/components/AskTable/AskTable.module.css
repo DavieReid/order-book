@@ -3,6 +3,6 @@
     var(--color-ask-depth-level),
     var(--color-ask-depth-level)
   );
-  background-repeat: no-repeat; /* dont change */
+  background-repeat: no-repeat;
   background-position: left;
 }
