@@ -4,7 +4,7 @@ import { OrderTuple } from "../../store";
 
 export function getDepthLevel(levelTotal: number, highTotal: number) {
   const depth = new Big(levelTotal).div(highTotal).times(100);
-  return depth.toFixed(2);
+  return depth.toFixed(0, Big.roundHalfUp);
 }
 
 export interface OrderBookRowData extends Record<string, unknown> {

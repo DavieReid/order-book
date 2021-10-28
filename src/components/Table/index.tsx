@@ -63,9 +63,9 @@ export default function Table<T extends Record<string, unknown>>({
             >
               {row.cells.map((cell) => {
                 return (
-                  <div className={styles.td} {...cell.getCellProps()}>
+                  <span className={styles.td} {...cell.getCellProps()}>
                     {cell.render("Cell")}
-                  </div>
+                  </span>
                 );
               })}
             </div>
