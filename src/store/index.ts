@@ -1,6 +1,6 @@
 import Big from "big.js";
 import create from "zustand";
-import { calculateTotalsAtLevel, handleDelta } from "./processing";
+import { calculateTotals, handleDelta } from "./processing";
 
 export type OrderTuple = [price: number, size: number, total?: number];
 
@@ -40,8 +40,8 @@ const useStore = create<GlobalAppState>((set, get) => ({
     set({ showConnectionWarning }),
   setInitialSnapshot: ({ bids, asks, numLevels, productId }) =>
     set({
-      bids: calculateTotalsAtLevel(bids),
-      asks: calculateTotalsAtLevel(asks),
+      bids: calculateTotals(bids),
+      asks: calculateTotals(asks),
       numLevels,
       productId,
     }),
@@ -51,9 +51,6 @@ const useStore = create<GlobalAppState>((set, get) => ({
       asks: handleDelta(get().asks || [], deltaAsks || [], get().numLevels),
     }),
 }));
-
-export const useShowConnectionWarning = () =>
-  useStore((state) => state.showConnectionWarning);
 
 export const useBids = () => useStore((state) => state.bids || []);
 

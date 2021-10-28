@@ -1,5 +1,5 @@
 import { OrderTuple } from "../index";
-import { calculateTotalsAtLevel, handleDelta } from "../processing";
+import { calculateTotals, handleDelta } from "../processing";
 
 const sampleOrders: OrderTuple[] = [
   [61009.5, 1],
@@ -19,7 +19,7 @@ describe("GIVEN the processing module", () => {
       [61000.5, 5, 15],
     ];
     test("Then the total is calculated correctly for each level", () => {
-      expect(calculateTotalsAtLevel(sampleOrders, 0)).toEqual(expectedResult);
+      expect(calculateTotals(sampleOrders)).toEqual(expectedResult);
     });
   });
 
