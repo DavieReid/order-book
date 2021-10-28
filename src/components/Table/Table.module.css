@@ -66,6 +66,10 @@
   }
   .thead {
     padding: 2px;
+    top: 0;
+    position: sticky;
+    align-self: flex-start;
+    background-color: var(--color-bg);
   }
   .body {
     flex-direction: column-reverse;
