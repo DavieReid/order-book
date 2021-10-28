@@ -16,6 +16,8 @@ code {
 :root {
   --color-bg: #0a0c10;
   --color-text: #fff;
+  --color-text-error: #e32b16;
+  --color-bg-error: #ffe3e0;
   --color-heading: grey;
   --color-bid: rgb(0, 216, 101);
   --color-bid-depth-level: rgb(0, 216, 101, 0.3);
