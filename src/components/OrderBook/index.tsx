@@ -1,4 +1,4 @@
-import useDataFeed from "../../client/useDataFeed";
+import useDataFeed from "../../data-feed/useDataFeed";
 import { useProductId } from "../../store";
 import AskTable from "../AskTable";
 import BidTable from "../BidTable";
