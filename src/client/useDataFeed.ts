@@ -86,7 +86,13 @@ export default function useDataFeed(product: string) {
         }
       };
     },
-    [handleOpen, setInitialSnapshot, queueMessage, showConnectionWarning]
+    [
+      handleOpen,
+      setInitialSnapshot,
+      queueMessage,
+      showConnectionWarning,
+      setShowConnectionWarning,
+    ]
   );
 
   useEffect(

@@ -1,26 +1,10 @@
 import { useMemo } from "react";
-import { OrderTuple, useBids } from "../../store";
-import { asUSD } from "../../utils/prices";
+import { useBids } from "../../store";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
 
 import styles from "./BidTable.module.css";
-
-interface OrderBookRowData extends Record<string, unknown> {
-  rowIndex: number;
-  price: string;
-  size: number;
-  total: number;
-}
-
-function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
-  return orders.map((order, index) => ({
-    rowIndex: index,
-    price: asUSD.format(order[0]),
-    size: order[1],
-    total: order[2] || 0,
-  }));
-}
+import { mapOrdersToRowData, OrderBookRowData } from "../OrderBook/utils";
 
 const columns = [
   {

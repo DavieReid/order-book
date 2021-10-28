@@ -1,27 +1,11 @@
 import { useMemo } from "react";
 import clsx from "clsx";
-import { OrderTuple, useAsks } from "../../store";
-import { asUSD } from "../../utils/prices";
+import { useAsks } from "../../store";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
 
 import styles from "./AskTable.module.css";
-
-interface OrderBookRowData extends Record<string, unknown> {
-  rowIndex: number;
-  price: string;
-  size: number;
-  total: number;
-}
-
-function mapOrdersToRowData(orders: OrderTuple[]): OrderBookRowData[] {
-  return orders.map((order, index) => ({
-    rowIndex: index,
-    price: asUSD.format(order[0]),
-    size: order[1],
-    total: order[2] || 0,
-  }));
-}
+import { mapOrdersToRowData, OrderBookRowData } from "../OrderBook/utils";
 
 const columns = [
   {
