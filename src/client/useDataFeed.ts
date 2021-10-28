@@ -36,6 +36,7 @@ export default function useDataFeed(product: string) {
   );
 
   const webSocketRef = useRef<WebSocket>();
+  const processedInitialMessageRef = useRef(false);
   const { queueMessage } = useThrottledMessageProcessing();
   const [activeProduct, setActiveProduct] = useState<string>();
 
@@ -51,29 +52,37 @@ export default function useDataFeed(product: string) {
 
   useEffect(
     function subscribe() {
-      if (!showConnectionWarning) {
-        webSocketRef.current = new WebSocket(ENDPOINT);
+      try {
+        if (!showConnectionWarning) {
+          webSocketRef.current = new WebSocket(ENDPOINT);
 
-        webSocketRef.current.onopen = () => handleOpen();
+          webSocketRef.current.onopen = () => handleOpen();
 
-        webSocketRef.current.onclose = () => console.log("ws closed");
+          webSocketRef.current.onclose = () => console.log("ws closed");
 
-        webSocketRef.current.onmessage = (msg) => {
-          const message: MessageEvent = JSON.parse(msg.data);
+          webSocketRef.current.onmessage = (msg) => {
+            const message: MessageEvent = JSON.parse(msg.data);
 
-          //treat the initial message upon subscription as a special case
-          if (message?.feed?.toLowerCase().includes("snapshot")) {
-            setInitialSnapshot({
-              bids: message.bids,
-              asks: message.asks,
-              numLevels: message.numLevels,
-              productId: message.product_id,
-            });
-          } else {
-            // these are deltas...queue them up as there are loads!
-            queueMessage(message);
-          }
-        };
+            //treat the initial message upon subscription as a special case
+            if (
+              !processedInitialMessageRef.current &&
+              message?.feed?.toLowerCase().includes("snapshot")
+            ) {
+              setInitialSnapshot({
+                bids: message.bids,
+                asks: message.asks,
+                numLevels: message.numLevels,
+                productId: message.product_id,
+              });
+              processedInitialMessageRef.current = true;
+            } else {
+              // these are deltas...queue them up as there are loads!
+              queueMessage(message);
+            }
+          };
+        }
+      } catch (ex) {
+        setShowConnectionWarning(true);
       }
 
       return () => {
@@ -82,7 +91,13 @@ export default function useDataFeed(product: string) {
         }
       };
     },
-    [handleOpen, setInitialSnapshot, queueMessage, showConnectionWarning]
+    [
+      handleOpen,
+      setInitialSnapshot,
+      queueMessage,
+      showConnectionWarning,
+      setShowConnectionWarning,
+    ]
   );
 
   useEffect(
@@ -98,6 +113,7 @@ export default function useDataFeed(product: string) {
           product_ids: [activeProduct],
         });
         webSocketRef.current?.send(unSubscribeMessage);
+        processedInitialMessageRef.current = false;
       }
     },
     [activeProduct]
@@ -111,6 +127,7 @@ export default function useDataFeed(product: string) {
             const unSubscribeMessage = getCommandMessage(false, product);
             webSocketRef.current?.send(unSubscribeMessage);
             setShowConnectionWarning(true);
+            processedInitialMessageRef.current = false;
           }
         }
       };

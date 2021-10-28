@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import styles from "./Table.module.css";
 import { useHighestTotalInBook } from "../../store";
-import { getDepthLevel } from "../../utils/prices";
+import { getDepthLevel } from "../OrderBook/utils";
 
 interface TableProps<RowData extends Record<string, unknown>> {
   columns: Column<RowData>[];
