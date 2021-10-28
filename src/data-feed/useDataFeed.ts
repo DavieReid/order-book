@@ -105,7 +105,7 @@ export default function useDataFeed(product: string) {
       if (
         activeProduct &&
         webSocketRef.current?.OPEN &&
-        !webSocketRef.current.CONNECTING
+        processedInitialMessageRef.current
       ) {
         const unSubscribeMessage = JSON.stringify({
           event: "subscribe",
@@ -123,7 +123,10 @@ export default function useDataFeed(product: string) {
     function unSubscribeFromFeedWhenVisibilityLost() {
       const handleVisibilityChange = () => {
         if (document.visibilityState === "hidden") {
-          if (webSocketRef.current?.OPEN && !webSocketRef.current.CONNECTING) {
+          if (
+            webSocketRef.current?.OPEN &&
+            processedInitialMessageRef.current
+          ) {
             const unSubscribeMessage = getCommandMessage(false, product);
             webSocketRef.current?.send(unSubscribeMessage);
             setShowConnectionWarning(true);
