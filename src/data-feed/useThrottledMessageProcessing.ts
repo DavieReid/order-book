@@ -30,12 +30,14 @@ export default function useThrottledMessageProcessing(interval = 1000) {
 
   useEffect(() => {
     const flush = () => {
-      processDelta({
-        deltaBids: bidDeltasRef.current,
-        deltaAsks: askDeltasRef.current,
-      });
-      askDeltasRef.current = [];
-      bidDeltasRef.current = [];
+      if (bidDeltasRef.current.length > 0 || askDeltasRef.current.length > 0) {
+        processDelta({
+          deltaBids: bidDeltasRef.current,
+          deltaAsks: askDeltasRef.current,
+        });
+        askDeltasRef.current = [];
+        bidDeltasRef.current = [];
+      }
     };
     let timer = setInterval(flush, interval);
     return () => {
