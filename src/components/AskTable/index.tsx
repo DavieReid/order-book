@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import clsx from "clsx";
 import { useAsks } from "../../store";
 import PriceCell from "../OrderBook/PriceCell";
 import Table from "../Table";
