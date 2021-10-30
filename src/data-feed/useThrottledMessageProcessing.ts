@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import useStore from "../store";
+import useStore, { useProductId } from "../store";
 import type { OrderTuple } from "../store";
 
 type MessageEvent = {
@@ -12,6 +12,7 @@ type MessageEvent = {
 
 export default function useThrottledMessageProcessing(interval = 1000) {
   const processDelta = useStore((state) => state.processDelta);
+  const selectedProductId = useProductId();
 
   const askDeltasRef = useRef<OrderTuple[]>([]);
   const bidDeltasRef = useRef<OrderTuple[]>([]);
@@ -44,6 +45,11 @@ export default function useThrottledMessageProcessing(interval = 1000) {
       clearInterval(timer);
     };
   }, [interval, processDelta]);
+
+  useEffect(() => {
+    bidDeltasRef.current = [];
+    askDeltasRef.current = [];
+  }, [selectedProductId]);
 
   return { queueMessage };
 }
