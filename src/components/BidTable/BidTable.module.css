@@ -11,6 +11,10 @@
   flex-direction: row;
 }
 
+.tableBody {
+  flex-direction: column;
+}
+
 @media only screen and (max-width: 600px) {
   .header {
     display: none;
@@ -19,5 +23,9 @@
   .depthLevel {
     flex-direction: row-reverse;
     background-position: left;
+  }
+
+  .tableBody {
+    flex-direction: column;
   }
 }

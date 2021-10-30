@@ -6,3 +6,13 @@
   background-repeat: no-repeat;
   background-position: left;
 }
+
+.tableBody {
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 600px) {
+  .tableBody {
+    flex-direction: column-reverse;
+  }
+}

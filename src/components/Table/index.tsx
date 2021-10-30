@@ -9,6 +9,7 @@ import { getDepthLevel } from "../OrderBook/utils";
 interface TableProps<RowData extends Record<string, unknown>> {
   columns: Column<RowData>[];
   data: RowData[];
+  bodyClassName?: string;
   headerClassName?: string;
   rowClassName?: string;
 }
@@ -16,6 +17,7 @@ interface TableProps<RowData extends Record<string, unknown>> {
 export default function Table<T extends Record<string, unknown>>({
   columns,
   data = [],
+  bodyClassName,
   headerClassName,
   rowClassName,
 }: TableProps<T>) {
@@ -41,7 +43,10 @@ export default function Table<T extends Record<string, unknown>>({
           </div>
         ))}
       </div>
-      <div className={styles.body} {...getTableBodyProps()}>
+      <div
+        className={clsx(styles.body, bodyClassName)}
+        {...getTableBodyProps()}
+      >
         {rows.map((row, i) => {
           prepareRow(row);
 
