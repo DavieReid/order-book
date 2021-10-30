@@ -47,8 +47,18 @@ const useStore = create<GlobalAppState>((set, get) => ({
     }),
   processDelta: ({ deltaBids, deltaAsks }) =>
     set({
-      bids: handleDelta(get().bids || [], deltaBids || [], get().numLevels),
-      asks: handleDelta(get().asks || [], deltaAsks || [], get().numLevels),
+      bids: handleDelta(
+        get().bids || [],
+        deltaBids || [],
+        get().numLevels,
+        "bid"
+      ),
+      asks: handleDelta(
+        get().asks || [],
+        deltaAsks || [],
+        get().numLevels,
+        "ask"
+      ),
     }),
 }));
 

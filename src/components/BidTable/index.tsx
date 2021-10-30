@@ -32,6 +32,7 @@ const BidTable = () => {
     <Table<OrderBookRowData>
       columns={columns}
       data={data}
+      bodyClassName={styles.tableBody}
       headerClassName={styles.header}
       rowClassName={styles.depthLevel}
     />

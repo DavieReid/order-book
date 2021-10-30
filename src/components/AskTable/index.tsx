@@ -33,7 +33,8 @@ const AskTable = () => {
     <Table<OrderBookRowData>
       columns={columns}
       data={data}
-      rowClassName={clsx(styles.depthLevel)}
+      bodyClassName={styles.tableBody}
+      rowClassName={styles.depthLevel}
     />
   );
 };

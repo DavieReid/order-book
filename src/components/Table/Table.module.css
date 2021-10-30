@@ -71,7 +71,4 @@
     align-self: flex-start;
     background-color: var(--color-bg);
   }
-  .body {
-    flex-direction: column-reverse;
-  }
 }

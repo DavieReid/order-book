@@ -1,6 +1,6 @@
 import { OrderTuple } from "./index";
 
-const priceComparator = (a: OrderTuple, b: OrderTuple) => {
+const lowToHighComparator = (a: OrderTuple, b: OrderTuple) => {
   const aPrice = a[0];
   const bPrice = b[0];
 
@@ -8,6 +8,19 @@ const priceComparator = (a: OrderTuple, b: OrderTuple) => {
     return -1;
   }
   if (aPrice > bPrice) {
+    return 1;
+  }
+  return 0;
+};
+
+const highToLowComparator = (a: OrderTuple, b: OrderTuple) => {
+  const aPrice = a[0];
+  const bPrice = b[0];
+
+  if (aPrice > bPrice) {
+    return -1;
+  }
+  if (aPrice < bPrice) {
     return 1;
   }
   return 0;
@@ -28,7 +41,8 @@ export function calculateTotals(orders: OrderTuple[]) {
 export function handleDelta(
   currentOrders: OrderTuple[],
   deltas: OrderTuple[],
-  numLevels: number
+  numLevels: number,
+  side: "bid" | "ask"
 ) {
   let deltaSize: number;
   let deltaPrice: number;
@@ -60,6 +74,9 @@ export function handleDelta(
   });
 
   // because new orders are pushed in at the end
-  // we need to sort by price to ensure correct total calculations
+  // we need to sort to ensure correct total calculations
+  const priceComparator =
+    side === "bid" ? highToLowComparator : lowToHighComparator;
+
   return calculateTotals(nextOrders.sort(priceComparator).slice(0, numLevels));
 }
