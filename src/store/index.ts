@@ -24,6 +24,7 @@ interface GlobalAppState {
   showConnectionWarning: boolean;
   // setters
   setShowConnectionWarning: (showConnectionWarning: boolean) => void;
+  setNumLevels: (numLevels: number) => void;
   setProductId: (productId: string) => void;
   setInitialSnapshot: (source: InitialSnapshotSource) => void;
   processDelta: (source: Delta) => void;
@@ -36,6 +37,7 @@ const useStore = create<GlobalAppState>((set, get) => ({
   productId: "PI_XBTUSD",
   showConnectionWarning: false,
   setProductId: (productId) => set({ productId, bids: [], asks: [] }),
+  setNumLevels: (numLevels: number) => set({ numLevels }),
   setShowConnectionWarning: (showConnectionWarning) =>
     set({ showConnectionWarning }),
   setInitialSnapshot: ({ bids, asks, numLevels, productId }) =>
